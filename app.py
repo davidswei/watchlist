@@ -18,13 +18,23 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # 关闭对模型修改的�
 # 在扩展累实例化钱加载配置
 db = SQLAlchemy(app)
 
+@app.context_processor
+def inject_user(): # 函数名可以随意修改
+    user = User.query.first()
+    return dict(user=user) # 需要返回字典，等同于return {'user: user}
+
+@app.errorhandler(404) # 传入要处理的错误代码
+def page_not_found(e): # 接受异常对象作为参数
+    user = User.query.first()
+    return render_template('404.html'), 404 # 返回模版和状态码
+
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def index():
     user = User.query.first() # 读取用户记录
     movies = Movie.query.all() # 读取所有的电影记录
-    return render_template('index.html', user=user, movies=movies)
+    return render_template('index.html', movies=movies)
 
 @app.route('/user/<name>')
 def user_page(name):
@@ -86,3 +96,6 @@ def forge():
 
     db.session.commit()
     click.echo('Done.')
+
+
+
