@@ -5,3 +5,5 @@ __pycache__
 .env
 .gitignore
 *.db
+htmlcov/
+.coverage

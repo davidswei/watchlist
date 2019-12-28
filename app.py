@@ -67,15 +67,6 @@ def index():
 def user_page(name):
     return 'User: %s' % name
 
-@app.route('/test')
-def test_url_for():
-    print(url_for('hello'))
-    print(url_for('user_page', name='john'))
-    print(url_for('user_page', name='susan'))
-    print(url_for('test_url_for'))
-    print(url_for('test_url_for', num=2))
-    return 'Test page'
-
 class User(db.Model, UserMixin):  # 表名将会是user（自动生成，小写处理）
     id = db.Column(db.Integer, primary_key=True) # 主键
     name = db.Column(db.String(20)) # 名字
@@ -103,7 +94,7 @@ def initdb(drop):
     if drop:  # 判断是否输入了选项
         db.drop_all()
     db.create_all()
-    click.echo('Initalized database.') # 输出提示信息
+    click.echo('Initialized database.') # 输出提示信息
 
 @app.cli.command()
 def forge():
